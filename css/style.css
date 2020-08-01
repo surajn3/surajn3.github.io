@@ -14,3 +14,8 @@
 .footer-row {
     text-align: center;
 }
+
+rect {
+    fill: blue;
+    shape-rendering: crispEdges;
+}
