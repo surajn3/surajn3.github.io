@@ -8,6 +8,11 @@ async function init() {
         .append("h1")
         .text("Hello")
 
-    // var data = await d3.csv("https://raw.githubusercontent.com/surajn3/surajn3.github.io/master/data/owid-covid-data.csv");
-    // console.log(data.length);
+    var data = await d3.csv("https://raw.githubusercontent.com/surajn3/surajn3.github.io/master/data/owid-covid-data.csv");
+    console.log(data.length);
+    
+    // Filter data based on selected location
+    console.log(data.filter(function(d){
+       return d.location === "United States";
+    }).length);
 }
