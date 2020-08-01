@@ -19,7 +19,7 @@ async function init() {
         .append("p")
         .text("Displaying for Country Name : " + countryName);
 
-    var data = await d3.csv("https:/raw.githubusercontent.com/surajn3/surajn3.github.io/master/data/owid-covid-data.csv");
+    var data = await d3.csv("https://raw.githubusercontent.com/surajn3/surajn3.github.io/master/data/owid-covid-data.csv");
     console.log("Loaded "+ data.length + " records.");
     
     // Filter data based on selected location
