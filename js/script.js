@@ -63,7 +63,7 @@ async function firstPage() {
 
     var x = d3.scaleLinear()
                 .domain([0, countryData.length])
-                .range([0, width]);
+                .range([0, width - 40]);
 
     //date format
     var dateParser = d3.timeParse("%Y-%m-%d");
@@ -72,7 +72,7 @@ async function firstPage() {
                         .domain(d3.extent(countryData, function(d){
                             return dateParser(d.date);
                         }))
-                        .range([0, width]);
+                        .range([0, width - 40]);
 
     visualizationTarget
         .append("svg")
