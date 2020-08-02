@@ -19,3 +19,9 @@ rect {
     fill: blue;
     shape-rendering: crispEdges;
 }
+
+.trendline {
+    fill: none;
+    stroke: #ccc;
+    stroke-width:4px;
+}
