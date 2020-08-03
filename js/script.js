@@ -13,6 +13,9 @@ async function firstPage() {
     d3.select("#firstPageBackButton").remove();
     d3.select("#secondPageNextButton").remove();
     d3.select("#dropDownButtonDiv").style("display", "block");
+    d3.select("#inputSelectDateDiv").style("display", "none");
+    d3.select("#inputStartDateDiv").style("display", "block");
+    d3.select("#inputEndDateDiv").style("display", "block");
 
     var startDateInput = document.getElementById("inputStartDate").value;
     var endDateInput = document.getElementById("inputEndDate").value;
@@ -148,6 +151,9 @@ async function secondPage() {
 
     d3.select("svg").remove();
     d3.select("#dropDownButtonDiv").style("display", "none");
+    d3.select("#inputSelectDateDiv").style("display", "block");
+    d3.select("#inputStartDateDiv").style("display", "none");
+    d3.select("#inputEndDateDiv").style("display", "none");
     //d3.select("#countryDropDownDiv").remove();
     d3.select("#firstPageNextButton").remove();
     d3.select("#secondPageBackButton").remove();
@@ -295,6 +301,11 @@ async function thirdPage() {
     d3.select("svg").remove();
     d3.select("#firstPageBackButton").remove();
     d3.select("#secondPageNextButton").remove();
+
+    d3.select("#dropDownButtonDiv").style("display", "none");
+    d3.select("#inputSelectDateDiv").style("display", "none");
+    d3.select("#inputStartDateDiv").style("display", "block");
+    d3.select("#inputEndDateDiv").style("display", "block");
 
 
     var visualizationTarget = d3.select("#visualizationTarget");
