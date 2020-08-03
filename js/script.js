@@ -113,16 +113,47 @@ async function firstPage() {
         .enter()
             .append("rect")
             .attr("width", timeScale(startDate) - 1)
-            .attr("height", function(d) {
-                return height - y(parseFloat(d.new_cases));
-            })
             .attr("x", function(d, i){
                 return 40 + timeScale(dateParser(d.date));
             })
+            .attr("y", height-30)
+            .attr("height", 0)
+            .on("mouseover", function(d,i){
+                d3.select(this)
+                    .classed("default-rect-color",false)
+                    .classed("highlighted-rect-color",true)
+
+                var l = d3.event.pageX - 10;
+                var t = d3.event.pageY - 40;
+
+                d3.select("#tooltip")
+                    .style("left", l + "px")
+                    .style("top", t + "px")
+                    .style("width", + d.location.length * 11 + "px")
+                    .style("height", "35px")
+                    .style("opacity", 1)
+                    .text(d.location)
+
+                console.log("Mouse Over on " + d.location);
+            })
+            .on("mouseout", function(d,i){
+                d3.select(this)
+                    .classed("highlighted-rect-color",false)
+                    .classed("default-rect-color",true)
+
+                d3.select("#tooltip")
+                    .style("opacity", 0);   
+
+                console.log("Mouse Out on " + d.location);
+            })
+            .transition()
+            .duration(2000)
             .attr("y", function(d){
                 return y(parseFloat(d.new_cases)) - 30;
             })
-            .append("title").text(function(d) {return parseFloat(d.new_cases) + " new cases on " + d.date;});
+            .attr("height", function(d) {
+                return height - y(parseFloat(d.new_cases));
+            });
 
     svg.append("g")
         .attr("transform", "translate(40,-30)")
@@ -271,7 +302,7 @@ async function secondPage() {
                 }
                 return scaledX;
             })
-            .attr("cy",height)
+            .attr("cy",height-40)
             .attr("r", 4)
             .transition()
             .duration(2000)
@@ -335,7 +366,7 @@ async function thirdPage() {
 
     var startDateInput = document.getElementById("inputStartDate").value;
     var endDateInput = document.getElementById("inputEndDate").value;
-    
+
     data = data.filter(function(d){
         return d.date >= startDateInput & d.date <= endDateInput;
     });
@@ -387,6 +418,8 @@ async function thirdPage() {
                     return y(parseFloat(d.total_cases) + 0.2);
                 });
 
+    var colorScale = d3.scaleOrdinal(d3.schemeCategory10);            
+
      visualizationTarget
         .append("svg")
         .attr("width", width)
@@ -402,7 +435,10 @@ async function thirdPage() {
         .data(countryData)
         .enter()
             .append("path")
+            .transition()
+            .duration(2000)
             .attr("d", function(d){ return line(d);})
+            .style("stroke",function(d,i){ return colorScale(i);})
 
     svg.append("g")
         .attr("transform", "translate(80,-30)")

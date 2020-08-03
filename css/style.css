@@ -16,13 +16,12 @@
 }
 
 rect {
-    fill: blue;
+    fill: SteelBlue;
     shape-rendering: crispEdges;
 }
 
 .trendline {
     fill: none;
-    stroke: #ccc;
     stroke-width: 1px;
 }
 
@@ -52,4 +51,16 @@ rect {
     background-color: rgba(0,0,0,0.75);
     opacity: 0;
     pointer-events: none;
+}
+
+.default-rect-color{
+    fill: SteelBlue;
+    shape-rendering: crispEdges;
+}
+
+.highlighted-rect-color{
+    fill: Maroon;
+    stroke: Black;
+    stroke-width: 3px;
+    shape-rendering: crispEdges;
 }
