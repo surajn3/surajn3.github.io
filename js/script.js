@@ -21,6 +21,10 @@ async function firstPage() {
     d3.select("#inputStartDateDiv").style("display", "block");
     d3.select("#inputEndDateDiv").style("display", "block");
 
+    d3.select("#p1").style("display", "block");
+    d3.select("#p2").style("display", "none");
+    d3.select("#p3").style("display", "none");
+
     d3.select("#refreshButton").attr("onClick", "firstPage()");
 
     var startDateInput = document.getElementById("inputStartDate").value;
@@ -188,6 +192,10 @@ async function secondPage() {
     d3.select("#firstPageBackButton").remove();
     d3.select("#secondPageNextButton").remove();
 
+    d3.select("#p1").style("display", "none");
+    d3.select("#p2").style("display", "block");
+    d3.select("#p3").style("display", "none");
+
     // Set target for Refresh
     d3.select("#refreshButton").attr("onClick", "secondPage()");
 
@@ -342,6 +350,10 @@ async function thirdPage() {
     d3.select("#inputSelectDateDiv").style("display", "none");
     d3.select("#inputStartDateDiv").style("display", "block");
     d3.select("#inputEndDateDiv").style("display", "block");
+
+    d3.select("#p1").style("display", "none");
+    d3.select("#p2").style("display", "none");
+    d3.select("#p3").style("display", "block");
 
 
     var visualizationTarget = d3.select("#visualizationTarget");
