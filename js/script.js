@@ -5,10 +5,19 @@ function setCountry(countryName) {
     console.log("Setting country name to " + countryName);
     document.getElementById("dropDownButton").innerHTML = countryName;
     console.log(document.getElementById("dropDownButton").innerHTML);
-    firstPage();
 }
 
 async function firstPage() {
+
+    var startDateInput = document.getElementById("inputStartDate").value;
+    var endDateInput = document.getElementById("inputEndDate").value;
+    console.log("Start Date : " + startDateInput);
+    console.log("End Date : " + endDateInput);
+
+    d3.select("#inputStartDate").on("changeDate",function(d,i){
+        console.log("changeDate")
+    });
+
     var countryName = "United States";
 
     var visualizationTarget = d3.select("#visualizationTarget");
@@ -36,7 +45,7 @@ async function firstPage() {
     
     // Filter data based on selected location
     var countryData = data.filter(function(d){
-       return d.location === countryName;
+       return d.location === countryName & d.date >= startDateInput & d.date <= endDateInput;
     })
 
     //countryDropDownDiv

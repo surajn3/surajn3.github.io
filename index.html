@@ -12,7 +12,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body onload="secondPage()">
+<body onload="firstPage()">
     <div class="container-fluid">
         <div class="row">
             <!-- Left Padding -->
@@ -22,17 +22,44 @@
                 <div class="jumbotron">
                     <h3>Spread of Coronavirus</h3>
                 </div>
-                <div class="dropdown">
-                  <button id="dropDownButton" class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    United States
-                  </button>
-                  <div id ="countryDropDownDiv" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <!-- Add dropdown via D3-->
-                  </div>
+                <div class="row">
+                    <div class="col-lg-10">
+                        <div id="visualizationTarget"></div>
+                    </div>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-1">
+                        <div class="row" id="inputControl">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="dropdown">
+                                      <button id="dropDownButton" class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        United States
+                                      </button>
+                                      <div id ="countryDropDownDiv" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <!-- Add dropdown via D3-->
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group row">
+                                        <label for="inputStartDate" class="col-form-label">Start Date</label>
+                                        <input type="date" class="form-control" id="inputStartDate" aria-describedby="inputStartDate" placeholder="Start Date(YYYY-MM-DD)" value="2020-01-01">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group row">
+                                        <label for="inputEndDate" class="col-form-label">End Date</label>
+                                        <input type="date" class="form-control" id="inputEndDate" aria-describedby="inputEndDate" placeholder="End Date(YYYY-MM-DD)" value="2020-07-26">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <button class="btn btn-primary" type="button" onClick="firstPage()">Refresh</button>
+                                </div                                    
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div id="visualizationTarget"></div>
-
-            </div>
+            </div>    
             <!-- Right Padding -->
             <div class="col col-xl-1 col-lg-1 col-md-1"></div>
         </div>
