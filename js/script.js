@@ -17,6 +17,8 @@ async function firstPage() {
     d3.select("#inputStartDateDiv").style("display", "block");
     d3.select("#inputEndDateDiv").style("display", "block");
 
+    d3.select("#refreshButton").attr("onClick", "firstPage()");
+
     var startDateInput = document.getElementById("inputStartDate").value;
     var endDateInput = document.getElementById("inputEndDate").value;
     console.log("Start Date : " + startDateInput);
@@ -49,6 +51,7 @@ async function firstPage() {
     if(data.length == 0) {
         data = await d3.csv("https://raw.githubusercontent.com/surajn3/surajn3.github.io/master/data/owid-covid-data.csv");
         console.log("Loaded "+ data.length + " records.");
+        data = data.filter(function(d){return d.location != "World" & d.location != "International"})
     }
     
     // Filter data based on selected location
@@ -157,6 +160,11 @@ async function secondPage() {
     //d3.select("#countryDropDownDiv").remove();
     d3.select("#firstPageNextButton").remove();
     d3.select("#secondPageBackButton").remove();
+    d3.select("#firstPageBackButton").remove();
+    d3.select("#secondPageNextButton").remove();
+
+    // Set target for Refresh
+    d3.select("#refreshButton").attr("onClick", "secondPage()");
 
 
     var visualizationTarget = d3.select("#visualizationTarget");
@@ -167,11 +175,14 @@ async function secondPage() {
     if(data.length == 0) {
         data = await d3.csv("https://raw.githubusercontent.com/surajn3/surajn3.github.io/master/data/owid-covid-data.csv");
         console.log("Loaded "+ data.length + " records.");
+        data = data.filter(function(d){return d.location != "World" & d.location != "International"})
     }
     
+    var selectedDate = document.getElementById("inputSelectDate").value;
+
     // Filter data based on selected date
     var countryData = data.filter(function(d){
-        return d.date === "2020-07-28" & d.location != "World";})
+        return d.date === selectedDate;})
 
     var yData = countryData.map(function(d){return parseFloat(d['total_cases']);});
 
@@ -297,10 +308,13 @@ async function secondPage() {
 async function thirdPage() {
     var countryName = "United States";
 
+    d3.select("#refreshButton").attr("onClick", "thirdPage()");
+
     // Cleanup
     d3.select("svg").remove();
     d3.select("#firstPageBackButton").remove();
     d3.select("#secondPageNextButton").remove();
+    d3.select("#secondPageBackButton").remove();
 
     d3.select("#dropDownButtonDiv").style("display", "none");
     d3.select("#inputSelectDateDiv").style("display", "none");
@@ -316,10 +330,14 @@ async function thirdPage() {
     if(data.length == 0) {
         data = await d3.csv("https://raw.githubusercontent.com/surajn3/surajn3.github.io/master/data/owid-covid-data.csv");
         console.log("Loaded "+ data.length + " records.");
+        data = data.filter(function(d){return d.location != "World" & d.location != "International"})
     }
 
+    var startDateInput = document.getElementById("inputStartDate").value;
+    var endDateInput = document.getElementById("inputEndDate").value;
+    
     data = data.filter(function(d){
-        return d.date > "2020-04-15" & d.location != "World";
+        return d.date >= startDateInput & d.date <= endDateInput;
     });
 
     var locations = Array.from(new Set(data.map(function(d){return d.location;}))).sort();
