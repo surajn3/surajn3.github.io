@@ -9,6 +9,10 @@ function setCountry(countryName) {
 
 async function firstPage() {
 
+    // Append div to body for tooltip
+    d3.select("body").append("div").attr("id", "tooltip");
+    d3.select("body").append("div").attr("id", "tooltip-bar");
+
     // Cleanup from 2nd page
     d3.select("#firstPageBackButton").remove();
     d3.select("#secondPageNextButton").remove();
@@ -21,12 +25,6 @@ async function firstPage() {
 
     var startDateInput = document.getElementById("inputStartDate").value;
     var endDateInput = document.getElementById("inputEndDate").value;
-    console.log("Start Date : " + startDateInput);
-    console.log("End Date : " + endDateInput);
-
-    d3.select("#inputStartDate").on("changeDate",function(d,i){
-        console.log("changeDate")
-    });
 
     var countryName = "United States";
 
@@ -126,25 +124,22 @@ async function firstPage() {
                 var l = d3.event.pageX - 10;
                 var t = d3.event.pageY - 40;
 
-                d3.select("#tooltip")
+                d3.select("#tooltip-bar")
                     .style("left", l + "px")
                     .style("top", t + "px")
-                    .style("width", + d.location.length * 11 + "px")
-                    .style("height", "35px")
+                    //.style("width", + d.location.length * 11 + "px")
+                    //.style("height", "35px")
                     .style("opacity", 1)
-                    .text(d.location)
-
-                console.log("Mouse Over on " + d.location);
+                    .text(parseInt(d.new_cases))
             })
             .on("mouseout", function(d,i){
                 d3.select(this)
                     .classed("highlighted-rect-color",false)
                     .classed("default-rect-color",true)
 
-                d3.select("#tooltip")
+                d3.select("#tooltip-bar")
                     .style("opacity", 0);   
 
-                console.log("Mouse Out on " + d.location);
             })
             .transition()
             .duration(2000)
@@ -156,11 +151,12 @@ async function firstPage() {
             });
 
     svg.append("g")
+        .classed("p1-y", true)
         .attr("transform", "translate(40,-30)")
         .call(d3.axisLeft(y));
 
-
     svg.append("g")
+        .classed("p1-x", true)
         .attr("transform", "translate(40," + (height - 30) +")")
         .call(d3.axisBottom(timeScale));
 
@@ -179,11 +175,9 @@ async function secondPage() {
 
     var countryName = "United States";
 
-    // Append div to body for tooltip
-    d3.select("body").append("div").attr("id", "tooltip");
-
 
     d3.select("svg").remove();
+    d3.select(".legend-svg").remove();
     d3.select("#dropDownButtonDiv").style("display", "none");
     d3.select("#inputSelectDateDiv").style("display", "block");
     d3.select("#inputStartDateDiv").style("display", "none");
@@ -265,8 +259,6 @@ async function secondPage() {
                     .style("height", "35px")
                     .style("opacity", 1)
                     .text(d.location)
-
-                console.log("Mouse Over on " + d.location);
             })
             .on("mouseout", function(d,i){
                 d3.select(this)
@@ -277,7 +269,6 @@ async function secondPage() {
                 d3.select("#tooltip")
                     .style("opacity", 0);   
 
-                console.log("Mouse Out on " + d.location);
             })
             .on("mousedown",function(d,i){
 
@@ -293,7 +284,6 @@ async function secondPage() {
                     .html("Location : " + d.location + 
                         " <br>Total Deaths : " + parseInt(d.total_deaths) +
                         " <br>Total Cases : " + parseInt(d.total_cases))
-                console.log("Mouse clicked on " + d.location);
             })
             .attr("cx", function(d){
                 var scaledX = x(parseFloat(d['total_deaths']));
@@ -343,6 +333,7 @@ async function thirdPage() {
 
     // Cleanup
     d3.select("svg").remove();
+    d3.select(".legend-svg").remove();
     d3.select("#firstPageBackButton").remove();
     d3.select("#secondPageNextButton").remove();
     d3.select("#secondPageBackButton").remove();
@@ -371,7 +362,7 @@ async function thirdPage() {
         return d.date >= startDateInput & d.date <= endDateInput;
     });
 
-    var locations = Array.from(new Set(data.map(function(d){return d.location;}))).sort();
+    //var locations = Array.from(new Set(data.map(function(d){return d.location;}))).sort();
 
     var locations = ["United States", "Brazil", "Italy", "India"];
     
@@ -448,6 +439,41 @@ async function thirdPage() {
     svg.append("g")
         .attr("transform", "translate(80," + (height - 30) +")")
         .call(d3.axisBottom(timeScale));
+
+    visualizationTarget
+        .append("svg")
+        .attr("width", width)
+        .attr("height", 40)
+        .classed("legend-svg", true);
+
+    var svg2 = d3.select(".legend-svg");
+
+    svg2.selectAll("circle")
+        .data(locations)
+        .enter()
+            .append("circle")
+                .attr("cy",10)
+                .attr("cx",function(d,i){
+                    return (i+1) * 150;
+                })
+                .attr("r", 6).style("fill", function(d,i){
+                    return colorScale(i);
+                })
+
+    svg2.selectAll("text")
+        .data(locations)
+        .enter()
+            .append("text")
+                .attr("y",10)
+                .attr("x",function(d,i){
+                    return (i+1) * 150 + 10;
+                })
+                .text(function(d,i){
+                    return d;
+                }).style("font-size", "15px").attr("alignment-baseline","middle");
+            
+
+     
 
 
     visualizationTarget
