@@ -9,6 +9,11 @@ function setCountry(countryName) {
 
 async function firstPage() {
 
+    // Cleanup from 2nd page
+    d3.select("#firstPageBackButton").remove();
+    d3.select("#secondPageNextButton").remove();
+    d3.select("#dropDownButtonDiv").style("display", "block");
+
     var startDateInput = document.getElementById("inputStartDate").value;
     var endDateInput = document.getElementById("inputEndDate").value;
     console.log("Start Date : " + startDateInput);
@@ -24,7 +29,7 @@ async function firstPage() {
     var countryDropDownDiv = d3.select("#countryDropDownDiv");
 
     var width = visualizationTarget.node().getBoundingClientRect().width;
-    var height = 400;
+    var height = 800;
 
     var inputCountryName = document.getElementById("dropDownButton").innerHTML;
     
@@ -126,6 +131,7 @@ async function firstPage() {
     visualizationTarget
         .append("button")
         .classed("btn btn-primary",true)
+        .attr("id", "firstPageNextButton")
         .attr("type", "button")
         .attr("onClick", "secondPage()")
         .text("Next");
@@ -141,8 +147,10 @@ async function secondPage() {
 
 
     d3.select("svg").remove();
-    d3.select("#dropDownButton").remove();
-    d3.select("#countryDropDownDiv").remove();
+    d3.select("#dropDownButtonDiv").style("display", "none");
+    //d3.select("#countryDropDownDiv").remove();
+    d3.select("#firstPageNextButton").remove();
+    d3.select("#secondPageBackButton").remove();
 
 
     var visualizationTarget = d3.select("#visualizationTarget");
@@ -262,7 +270,21 @@ async function secondPage() {
         .attr("transform", "translate(45," + (height - 30) +")")
         .call(d3.axisBottom(x).tickFormat(d3.format("~s")).tickValues([1, 100, 500, 10000, 50000, 100000, 200000, 500000, 1000000, 2000000]));             
 
-         
+    visualizationTarget
+        .append("button")
+        .classed("btn btn-primary",true)
+        .attr("id", "firstPageBackButton")
+        .attr("type", "button")
+        .attr("onClick", "firstPage()")
+        .text("Back");
+
+    visualizationTarget
+        .append("button")
+        .classed("btn btn-primary",true)
+        .attr("id", "secondPageNextButton")
+        .attr("type", "button")
+        .attr("onClick", "thirdPage()")
+        .text("Next");
 }
 
 
@@ -271,8 +293,8 @@ async function thirdPage() {
 
     // Cleanup
     d3.select("svg").remove();
-    d3.select("#dropDownButton").remove();
-    d3.select("#countryDropDownDiv").remove();
+    d3.select("#firstPageBackButton").remove();
+    d3.select("#secondPageNextButton").remove();
 
 
     var visualizationTarget = d3.select("#visualizationTarget");
@@ -360,6 +382,15 @@ async function thirdPage() {
 
     svg.append("g")
         .attr("transform", "translate(80," + (height - 30) +")")
-        .call(d3.axisBottom(timeScale));        
+        .call(d3.axisBottom(timeScale));
+
+
+    visualizationTarget
+        .append("button")
+        .classed("btn btn-primary",true)
+        .attr("id", "secondPageBackButton")
+        .attr("type", "button")
+        .attr("onClick", "secondPage()")
+        .text("Back");  
 
 }
