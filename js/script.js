@@ -127,6 +127,10 @@ async function secondPage() {
 
     var countryName = "United States";
 
+    // Append div to body for tooltip
+    d3.select("body").append("div").attr("id", "tooltip");
+
+
     d3.select("svg").remove();
     d3.select("#dropDownButton").remove();
     d3.select("#countryDropDownDiv").remove();
@@ -186,6 +190,17 @@ async function secondPage() {
                     .classed("highlighted-circle-color",true)
                     .attr("r", 4 + 3);
 
+                var l = d3.event.pageX - 10;
+                var t = d3.event.pageY - 40;
+
+                d3.select("#tooltip")
+                    .style("left", l + "px")
+                    .style("top", t + "px")
+                    .style("width", + d.location.length * 11 + "px")
+                    .style("height", "35px")
+                    .style("opacity", 1)
+                    .text(d.location)
+
                 console.log("Mouse Over on " + d.location);
             })
             .on("mouseout", function(d,i){
@@ -194,7 +209,26 @@ async function secondPage() {
                     .classed("default-circle-color",true)
                     .attr("r", 4);
 
+                d3.select("#tooltip")
+                    .style("opacity", 0);   
+
                 console.log("Mouse Out on " + d.location);
+            })
+            .on("mousedown",function(d,i){
+
+                var l = d3.event.pageX - 10;
+                var t = d3.event.pageY - 40;
+
+                d3.select("#tooltip")
+                    .style("left", l + "px")
+                    .style("top", t + "px")
+                    .style("width", + (d.location.length + 10) * 10 + "px")
+                    .style("height", "80px")
+                    .style("opacity", 1)
+                    .html("Location : " + d.location + 
+                        " <br>Total Deaths : " + parseInt(d.total_deaths) +
+                        " <br>Total Cases : " + parseInt(d.total_cases))
+                console.log("Mouse clicked on " + d.location);
             })
             .attr("cx", function(d){
                 var scaledX = x(parseFloat(d['total_deaths']));
