@@ -180,8 +180,10 @@ async function secondPage() {
     var countryName = "United States";
 
 
-    d3.select("svg").remove();
+    d3.select(".scatterplot").remove();
+    d3.select(".trendline").remove();
     d3.select(".legend-svg").remove();
+    d3.select(".barchart").remove();
     d3.select("#dropDownButtonDiv").style("display", "none");
     d3.select("#inputSelectDateDiv").style("display", "block");
     d3.select("#inputStartDateDiv").style("display", "none");
@@ -340,8 +342,9 @@ async function thirdPage() {
     d3.select("#refreshButton").attr("onClick", "thirdPage()");
 
     // Cleanup
-    d3.select("svg").remove();
+    d3.select(".trendline").remove();
     d3.select(".legend-svg").remove();
+    d3.select(".scatterplot").remove();
     d3.select("#firstPageBackButton").remove();
     d3.select("#secondPageNextButton").remove();
     d3.select("#secondPageBackButton").remove();
@@ -370,7 +373,7 @@ async function thirdPage() {
     var startDateInput = document.getElementById("inputStartDate").value;
     var endDateInput = document.getElementById("inputEndDate").value;
 
-    data = data.filter(function(d){
+    var data2 = data.filter(function(d){
         return d.date >= startDateInput & d.date <= endDateInput;
     });
 
@@ -380,15 +383,16 @@ async function thirdPage() {
     
     // Filter data based on selected location
     var countryData = locations.map(function(loc){
-        return data.filter(function(d){
+        return data2.filter(function(d){
         return d.location === loc;
     });
     });
+
     
     var dateParser = d3.timeParse("%Y-%m-%d");
 
     // TODO : Change this to include data only for top N countries
-    var maxTotalCases = d3.max(data, function(d){
+    var maxTotalCases = d3.max(data2, function(d){
                     return parseFloat(d.total_cases);
                 });
 
@@ -407,7 +411,7 @@ async function thirdPage() {
                 .range([height, 0]);            
 
     var timeScale = d3.scaleTime()
-                        .domain(d3.extent(data, function(d){
+                        .domain(d3.extent(data2, function(d){
                             return dateParser(d.date);
                         }))
                         .range([0, width - 40]);
@@ -438,8 +442,6 @@ async function thirdPage() {
         .data(countryData)
         .enter()
             .append("path")
-            .transition()
-            .duration(2000)
             .attr("d", function(d){ return line(d);})
             .style("stroke",function(d,i){ return colorScale(i);})
 
